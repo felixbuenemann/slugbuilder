@@ -7,10 +7,11 @@ RUN addgroup --quiet --gid 2000 slug && \
 # disable source repos (speeds up apt-get update)
 RUN sed -i -e 's/^deb-src/#deb-src/' /etc/apt/sources.list && \
     apt-get update && \
-    apt-get install -y md5deep && \
+    apt-get install -y md5deep bsdtar && \
     # cleanup
     apt-get autoremove -y && \
     apt-get clean -y && \
+    ln -nfs /usr/bin/bsdtar /bin/tar && \
     # package up license files if any by appending to existing tar
     COPYRIGHT_TAR='/usr/share/copyrights.tar'; \
     gunzip $COPYRIGHT_TAR.gz; tar -rf $COPYRIGHT_TAR /usr/share/doc/*/copyright; gzip $COPYRIGHT_TAR && \
